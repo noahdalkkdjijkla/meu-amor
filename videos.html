@@ -4,26 +4,23 @@
 <header class="center"><a class="back" href="index.html" aria-label="Voltar">←</a><h1 class="script">Nossos Vídeos</h1></header>
 <main><div class="grid v" id="g"></div></main>
 <script>
-// Coloque os vídeos na pasta "videos" com os nomes 1.mp4, 2.mp4, 3.mp4...
-var EXTS = ['mp4','webm','mov','MP4','MOV'], MIN = 6, g = document.getElementById('g'), count = 0;
-function card(v){
+// Vídeos na pasta "videos": 1.mp4, 2.mp4, 3.mp4... Mude N para a quantidade de vídeos.
+var N = 3, EXT = 'mp4', MIN = 6, g = document.getElementById('g');
+function card(src){
   var c = document.createElement('div'); c.className = 'vid';
   var s = document.createElement('div'); s.className = 'scr';
-  if (v) s.appendChild(v); else s.innerHTML = '<span class="ph">Vídeo</span>';
+  if (src){
+    var v = document.createElement('video');
+    v.controls = true; v.preload = 'metadata'; v.playsInline = true;
+    v.src = src + '#t=0.1';
+    s.appendChild(v);
+  } else s.innerHTML = '<span class="ph">Vídeo</span>';
   c.appendChild(s);
   var b = document.createElement('div'); b.className = 'bar'; c.appendChild(b);
   g.appendChild(c);
 }
-function load(i){ try_(i,0); }
-function try_(i,e){
-  if (e >= EXTS.length){ while (count < MIN){ card(null); count++; } return; }
-  var v = document.createElement('video');
-  v.controls = true; v.preload = 'metadata'; v.playsInline = true;
-  v.onloadedmetadata = function(){ card(v); count++; load(i+1); };
-  v.onerror = function(){ try_(i,e+1); };
-  v.src = 'videos/' + i + '.' + EXTS[e];
-}
-load(1);
+for (var i = 1; i <= N; i++) card('videos/' + i + '.' + EXT);
+for (var j = N; j < MIN; j++) card(null);
 </script>
 <script src="music.js"></script>
 </body></html>
