@@ -5,8 +5,7 @@
 <main><div class="grid f" id="g"></div></main>
 <div id="lb" onclick="this.style.display='none'"><img id="lbi" alt=""></div>
 <script>
-// Coloque as fotos na pasta "Fotos" com os nomes 1.jpg, 2.jpg, 3.jpg...
-var EXTS = ['jpg','jpeg','png','webp','JPG','JPEG','PNG'], MIN = 8, g = document.getElementById('g'), count = 0;
+var EXTS = ['jpeg','jpg','png','webp','JPEG','JPG','PNG'], MIN = 8, g = document.getElementById('g'), count = 0;
 function card(img){
   var c = document.createElement('div'); c.className = 'pol';
   var im = document.createElement('div'); im.className = 'im';
@@ -24,5 +23,5 @@ function try_(i,e){
 }
 load(1);
 </script>
-<script src="Music.js"></script>
+<script src="music.js"></script>
 </body></html>
