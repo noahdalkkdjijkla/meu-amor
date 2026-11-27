@@ -32,13 +32,17 @@
     salvar();
   });
 
-  var evs = ['pointerdown','click','touchend','keydown'];
+  // Qualquer interação tenta tocar; os gatilhos só saem quando a música realmente começa
+  var evs = ['touchstart','touchmove','touchend','pointerdown','pointermove','pointerup','click','keydown','wheel','scroll','mousemove'];
+  function remover(){ evs.forEach(function(ev){ window.removeEventListener(ev, primeiro, true); }); }
   function primeiro(e){
-    if (pausadoPeloUsuario || b.contains(e.target)) return;
+    if (pausadoPeloUsuario){ return; }
+    if (e && e.target && b.contains(e.target)) return;
+    if (!a.paused){ remover(); return; }
     var p = a.play();
-    if (p && p.then) p.then(function(){ evs.forEach(function(ev){ document.removeEventListener(ev, primeiro, true); }); }).catch(function(){});
+    if (p && p.then) p.then(remover).catch(function(){});
   }
-  evs.forEach(function(ev){ document.addEventListener(ev, primeiro, true); });
+  evs.forEach(function(ev){ window.addEventListener(ev, primeiro, {capture:true, passive:true}); });
 
   setInterval(salvar, 500);
   window.addEventListener('pagehide', salvar);
