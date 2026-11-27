@@ -1,7 +1,7 @@
 // Coloque a música em "musica/musica.mp3" (ou mude o caminho abaixo)
 (function(){
   var SRC = 'musica/musica.mp3', K = 'musica_estado';
-  var a = new Audio(); a.loop = true; a.preload = 'metadata'; a.volume = 0.6; a.src = SRC;
+  var a = new Audio(); a.loop = true; a.preload = 'auto'; a.volume = 0.6; a.src = SRC;
   var st = {}; try { st = JSON.parse(localStorage.getItem(K) || '{}'); } catch(e){}
   var pausadoPeloUsuario = st.pausado === true;
 
@@ -12,28 +12,44 @@
   document.body.appendChild(b);
 
   function salvar(){ try { localStorage.setItem(K, JSON.stringify({t:a.currentTime, pausado:pausadoPeloUsuario})); } catch(e){} }
-  function tocar(){ var p = a.play(); if (p && p.catch) p.catch(function(){}); }
+
+  // Tenta tocar com som; se o navegador bloquear, toca mudo e libera o som no primeiro toque
+  function iniciar(){
+    if (pausadoPeloUsuario || !a.paused) return;
+    var p = a.play();
+    if (p && p.catch) p.catch(function(){
+      a.muted = true;
+      var p2 = a.play();
+      if (p2 && p2.catch) p2.catch(function(){});
+    });
+  }
 
   a.addEventListener('loadedmetadata', function(){
     if (st.t && a.duration) a.currentTime = st.t % a.duration;
-    if (!pausadoPeloUsuario) tocar();
+    iniciar();
   });
+  a.addEventListener('canplay', iniciar);
   a.addEventListener('play', ui); a.addEventListener('pause', ui);
 
   b.addEventListener('click', function(e){
     e.stopPropagation();
-    if (a.paused){ pausadoPeloUsuario = false; tocar(); } else { pausadoPeloUsuario = true; a.pause(); }
+    if (a.paused){ pausadoPeloUsuario = false; a.muted = false; a.play().catch(function(){}); }
+    else { pausadoPeloUsuario = true; a.pause(); }
     salvar();
   });
 
   function primeiro(){
-    if (!pausadoPeloUsuario && a.paused) tocar();
-    ['click','touchstart','keydown'].forEach(function(ev){ document.removeEventListener(ev, primeiro); });
+    if (!pausadoPeloUsuario){
+      a.muted = false;
+      if (a.paused) a.play().catch(function(){});
+    }
+    ['click','touchstart','keydown','scroll','mousemove'].forEach(function(ev){ document.removeEventListener(ev, primeiro); });
   }
-  ['click','touchstart','keydown'].forEach(function(ev){ document.addEventListener(ev, primeiro); });
+  ['click','touchstart','keydown','scroll','mousemove'].forEach(function(ev){ document.addEventListener(ev, primeiro); });
 
   setInterval(salvar, 500);
   window.addEventListener('pagehide', salvar);
   document.addEventListener('visibilitychange', function(){ if (document.hidden) salvar(); });
   ui();
+  iniciar();
 })();
