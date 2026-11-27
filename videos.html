@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#8c2c45"><title>Nossos Vídeos</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="center"><a class="back" href="index.html" aria-label="Voltar">←</a><h1 class="script">Nossos Vídeos</h1></header>
+<main><div class="grid v" id="g"></div></main>
+<script>
+// Coloque os vídeos na pasta "videos" com os nomes 1.mp4, 2.mp4, 3.mp4...
+var EXTS = ['mp4','webm','mov','MP4','MOV'], MIN = 6, g = document.getElementById('g'), count = 0;
+function card(v){
+  var c = document.createElement('div'); c.className = 'vid';
+  var s = document.createElement('div'); s.className = 'scr';
+  if (v) s.appendChild(v); else s.innerHTML = '<span class="ph">Vídeo</span>';
+  c.appendChild(s);
+  var b = document.createElement('div'); b.className = 'bar'; c.appendChild(b);
+  g.appendChild(c);
+}
+function load(i){ try_(i,0); }
+function try_(i,e){
+  if (e >= EXTS.length){ while (count < MIN){ card(null); count++; } return; }
+  var v = document.createElement('video');
+  v.controls = true; v.preload = 'metadata'; v.playsInline = true;
+  v.onloadedmetadata = function(){ card(v); count++; load(i+1); };
+  v.onerror = function(){ try_(i,e+1); };
+  v.src = 'videos/' + i + '.' + EXTS[e];
+}
+load(1);
+</script>
+<script src="music.js"></script>
+</body></html>

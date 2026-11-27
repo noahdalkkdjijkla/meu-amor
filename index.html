@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#8c2c45"><title>Nossa História</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="hearts" id="h" aria-hidden="true"></div>
+<header>
+  <h1 class="script">Nossa História</h1>
+  <div class="timer"><small>Juntos há</small>
+    <div class="cells"><div><b id="d">0</b><em>dias</em></div><div><b id="h2">00</b><em>horas</em></div><div><b id="m">00</b><em>min</em></div><div><b id="s">00</b><em>seg</em></div></div>
+    <span>desde 28 de setembro de 2026</span></div>
+</header>
+<main>
+  <h2 class="script">Galeria</h2>
+  <div class="gal">
+    <a class="pol" href="fotos.html" aria-label="Nossas fotos"><div class="im"><span class="ph">Fotos</span></div></a>
+    <a class="vid" href="videos.html" aria-label="Nossos vídeos"><div class="scr"><span class="ph">Vídeos</span></div><div class="bar"></div></a>
+  </div>
+  <a class="carta-link" href="carta.html">Abrir minha carta</a>
+</main>
+<script>
+var INICIO = new Date(2026, 8, 28, 20, 0, 0);
+function p(n){return String(n).padStart(2,'0')}
+function tick(){
+  var s = Math.max(0, Math.floor((Date.now() - INICIO.getTime())/1000));
+  document.getElementById('d').textContent = Math.floor(s/86400);
+  document.getElementById('h2').textContent = p(Math.floor(s/3600)%24);
+  document.getElementById('m').textContent = p(Math.floor(s/60)%60);
+  document.getElementById('s').textContent = p(s%60);
+}
+tick(); setInterval(tick,1000);
+var H = document.getElementById('h');
+for (var i=0;i<16;i++){var e=document.createElement('i');e.textContent='♥';
+  e.style.left=(Math.random()*100)+'%';e.style.fontSize=(10+Math.random()*18)+'px';
+  e.style.animationDuration=(12+Math.random()*14)+'s';e.style.animationDelay=(-Math.random()*20)+'s';H.appendChild(e);}
+</script>
+<script src="music.js"></script>
+</body></html>

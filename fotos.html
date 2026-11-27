@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#8c2c45"><title>Nossas Fotos</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="center"><a class="back" href="index.html" aria-label="Voltar">←</a><h1 class="script">Nossas Fotos</h1></header>
+<main><div class="grid f" id="g"></div></main>
+<div id="lb" onclick="this.style.display='none'"><img id="lbi" alt=""></div>
+<script>
+// Coloque as fotos na pasta "fotos" com os nomes 1.jpg, 2.jpg, 3.jpg...
+var EXTS = ['jpg','jpeg','png','webp','JPG','JPEG','PNG'], MIN = 8, g = document.getElementById('g'), count = 0;
+function card(img){
+  var c = document.createElement('div'); c.className = 'pol';
+  var im = document.createElement('div'); im.className = 'im';
+  if (img){ im.appendChild(img); im.onclick = function(){ document.getElementById('lbi').src = img.src; document.getElementById('lb').style.display = 'flex'; }; }
+  else im.innerHTML = '<span class="ph">Foto</span>';
+  c.appendChild(im); g.appendChild(c);
+}
+function load(i){ try_(i,0); }
+function try_(i,e){
+  if (e >= EXTS.length){ while (count < MIN){ card(null); count++; } return; }
+  var img = new Image();
+  img.onload = function(){ card(img); count++; load(i+1); };
+  img.onerror = function(){ try_(i,e+1); };
+  img.src = 'fotos/' + i + '.' + EXTS[e];
+}
+load(1);
+</script>
+<script src="music.js"></script>
+</body></html>
