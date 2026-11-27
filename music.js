@@ -1,6 +1,6 @@
 // A música está na raiz do repositório: "musica.mp3"
 (function(){
-  var SRC = 'musica', K = 'musica_estado';
+  var SRC = 'musica.mp3', K = 'musica_estado';
   var a = new Audio(); a.loop = true; a.preload = 'auto'; a.volume = 0.6; a.src = SRC;
   var st = {}; try { st = JSON.parse(localStorage.getItem(K) || '{}'); } catch(e){}
   var pausadoPeloUsuario = st.pausado === true;
