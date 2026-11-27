@@ -20,7 +20,7 @@ function try_(i,e){
   var img = new Image();
   img.onload = function(){ card(img); count++; load(i+1); };
   img.onerror = function(){ try_(i,e+1); };
-  img.src = 'fotos/' + i + '.' + EXTS[e];
+  img.src = 'Fotos/' + i + '.' + EXTS[e];
 }
 load(1);
 </script>
