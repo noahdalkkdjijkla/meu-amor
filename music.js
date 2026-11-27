@@ -1,7 +1,7 @@
 // Coloque a música em "musica/musica.mp3" (ou mude o caminho abaixo)
 (function(){
   var SRC = 'musica/musica.mp3', K = 'musica_estado';
-  var a = new Audio(SRC); a.loop = true; a.preload = 'auto'; a.volume = 0.6;
+  var a = new Audio(); a.loop = true; a.preload = 'metadata'; a.volume = 0.6; a.src = SRC;
   var st = {}; try { st = JSON.parse(localStorage.getItem(K) || '{}'); } catch(e){}
   var pausadoPeloUsuario = st.pausado === true;
 
@@ -26,7 +26,6 @@
     salvar();
   });
 
-  // navegadores bloqueiam autoplay: começa no primeiro toque/clique na página
   function primeiro(){
     if (!pausadoPeloUsuario && a.paused) tocar();
     ['click','touchstart','keydown'].forEach(function(ev){ document.removeEventListener(ev, primeiro); });
