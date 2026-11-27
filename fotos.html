@@ -5,23 +5,20 @@
 <main><div class="grid f" id="g"></div></main>
 <div id="lb" onclick="this.style.display='none'"><img id="lbi" alt=""></div>
 <script>
-var EXTS = ['jpeg','jpg','png','webp','JPEG','JPG','PNG'], MIN = 8, g = document.getElementById('g'), count = 0;
-function card(img){
+var N = 5, MIN = 8, g = document.getElementById('g');
+function card(src){
   var c = document.createElement('div'); c.className = 'pol';
   var im = document.createElement('div'); im.className = 'im';
-  if (img){ im.appendChild(img); im.onclick = function(){ document.getElementById('lbi').src = img.src; document.getElementById('lb').style.display = 'flex'; }; }
-  else im.innerHTML = '<span class="ph">Foto</span>';
+  if (src){
+    var img = new Image();
+    img.loading = 'lazy'; img.decoding = 'async'; img.alt = ''; img.src = src;
+    im.appendChild(img);
+    im.onclick = function(){ document.getElementById('lbi').src = src; document.getElementById('lb').style.display = 'flex'; };
+  } else im.innerHTML = '<span class="ph">Foto</span>';
   c.appendChild(im); g.appendChild(c);
 }
-function load(i){ try_(i,0); }
-function try_(i,e){
-  if (e >= EXTS.length){ while (count < MIN){ card(null); count++; } return; }
-  var img = new Image();
-  img.onload = function(){ card(img); count++; load(i+1); };
-  img.onerror = function(){ try_(i,e+1); };
-  img.src = 'Fotos/' + i + '.' + EXTS[e];
-}
-load(1);
+for (var i = 1; i <= N; i++) card('Fotos/' + i + '.jpeg');
+for (var j = N; j < MIN; j++) card(null);
 </script>
 <script src="music.js"></script>
 </body></html>
